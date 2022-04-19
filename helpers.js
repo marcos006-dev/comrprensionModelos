@@ -3,9 +3,25 @@ import Tesseract from 'tesseract.js';
 import * as toxicity from '@tensorflow-models/toxicity';
 const resultado = document.getElementById('resultado');
 const grafica = document.getElementById('grafica');
+const inputFile = document.getElementById('file');
+let modelo;
+
+// funcion para cargar el modelo de toxicidad
+export const cargarModelo = async () => {
+  inputFile.disabled = true;
+  inputFile;
+  resultado.innerHTML = `<p>Estado: Cargando modelo, por favor espere</p>`;
+  const limite = 0.9;
+
+  modelo = await toxicity.load(limite);
+
+  resultado.innerHTML = `<p>Estado: Modelo Cargado</p>`;
+  inputFile.disabled = false;
+};
+
 // funcion para obtener path de imagen
 export const obtenerPathImagen = (imagen) => {
-  const path = (window.URL || window.webkitURL).createObjectURL(imagen);
+  const path = window.URL.createObjectURL(imagen);
   return path;
 };
 
@@ -38,9 +54,7 @@ export const obtenerPalabras = async (path) => {
 export const clasificarPalabras = async (palabras) => {
   resultado.innerHTML = `<p>Estado: Clasificando...</p>`;
   grafica.innerHTML = '';
-  const threshold = 0.9;
 
-  const modelo = await toxicity.load(threshold);
   const predicciones = await modelo.classify(palabras);
 
   return predicciones;

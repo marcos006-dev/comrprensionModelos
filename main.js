@@ -1,4 +1,5 @@
 import {
+  cargarModelo,
   clasificarPalabras,
   obtenerPalabras,
   obtenerPathImagen,
@@ -23,4 +24,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = e.target.files[0];
     obtenerTextoImagen(file);
   });
+  cargarModelo();
 });
